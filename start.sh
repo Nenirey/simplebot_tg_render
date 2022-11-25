@@ -1,5 +1,5 @@
 #!/bin/bash
-pip3 install -U https://github.com/LonamiWebs/Telethon/archive/v1.zip
+#pip3 install -U https://github.com/LonamiWebs/Telethon/archive/v1.zip
 BOTPATH="${ADDR/@/"%40"}"
 BOTZIPDB="${ADDR/@/"%40"}.zip"
 BOTDB="$HOME/.simplebot/accounts/$BOTPATH/bot.db"
