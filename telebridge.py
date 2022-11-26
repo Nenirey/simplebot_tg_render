@@ -49,9 +49,7 @@ import html
 import markdown
 import random
 import string
-from flask import Flask, request
 
-server = Flask(__name__)
 
 version = "0.2.15"
 api_id = os.getenv('API_ID')
@@ -3214,13 +3212,6 @@ def start_background_loop(bridge_initialized: Event) -> None:
     tloop = asyncio.new_event_loop()
     bridge_initialized.set()
     tloop.run_forever()
-
-
-@server.route("/")
-def webhook():
-    return "!", 200
-       
-server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 10000)))
 
 
 class TestEcho:
