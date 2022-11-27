@@ -24,4 +24,4 @@ dropbox
 psycopg2-binary
 markdown
 flask
-telebot
+pyTelegramBotAPI
