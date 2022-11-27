@@ -23,5 +23,5 @@ def webhook():
     bot.set_webhook(url=WEBHOOK + TOKEN, allowed_updates=util.update_types, drop_pending_updates = False)
     return "!", 200
        
-app.run(host="0.0.0.0", port=int(os.environ.get('PORT', 10000)))
+server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 10000)))
 
