@@ -3,7 +3,7 @@ import os
 import telebot
 
 TOKEN = os.environ.get('TOKEN')
-WEBHOOK = os.environ.get('WEBHOOK')
+WEBHOOK = os.environ.get('RENDER_EXTERNAL_URL')+'/'
 
 bot = telebot.TeleBot(token=TOKEN, skip_pending=False)
 server = Flask(__name__)
