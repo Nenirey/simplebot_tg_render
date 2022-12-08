@@ -50,6 +50,46 @@ import markdown
 import random
 import string
 
+#This is only for keep healty the web service
+#--------------------------------------------
+from flask import Flask, request
+import telebot
+from telebot import types as teletypes
+from telebot import util as teleutil
+
+TOKEN = os.environ.get('TOKEN')
+WEBHOOK = os.environ.get('RENDER_EXTERNAL_URL')+'/'
+
+bot = telebot.TeleBot(token=TOKEN, skip_pending=False)
+
+@bot.message_handler(commands=['help','Help','HELP','hELP'])
+def send_welcome(message):
+    bot.reply_to(message, 'This is a simplebot_tg helper')
+
+@server.route('/' + TOKEN, methods=['POST'])
+def getMessage():
+    bot.process_new_updates([teletypes.Update.de_json(request.stream.read().decode("utf-8"))])
+    return "!", 200
+
+@server.route("/")
+def webhook():
+    bot.remove_webhook()
+    bot.set_webhook(url=WEBHOOK + TOKEN, allowed_updates=teleutil.update_types, drop_pending_updates = False)
+    return "!", 200
+
+def start_background_loop(bridge_initialized: Event) -> None:
+    server = Flask(__name__)
+    bridge_initialized.set()
+    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 10000)))   
+
+telebot_init = Event()
+Thread(
+        target=start_background_loop,
+        args=(telebot_init,),
+        daemon=True,
+).start()
+telebot_init.wait()
+#---------------------------------------------
 
 version = "0.2.15"
 api_id = os.getenv('API_ID')
