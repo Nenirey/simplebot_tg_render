@@ -61,6 +61,7 @@ TOKEN = os.environ.get('TOKEN')
 WEBHOOK = os.environ.get('RENDER_EXTERNAL_URL')+'/'
 
 bot = telebot.TeleBot(token=TOKEN, skip_pending=False)
+server = Flask(__name__)
 
 @bot.message_handler(commands=['help','Help','HELP','hELP'])
 def send_welcome(message):
@@ -78,7 +79,6 @@ def webhook():
     return "!", 200
 
 def start_background_loop(bridge_initialized: Event) -> None:
-    server = Flask(__name__)
     bridge_initialized.set()
     server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 10000)))   
 
