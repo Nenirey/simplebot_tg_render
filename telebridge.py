@@ -1546,9 +1546,8 @@ async def react_button(bot, message, replies, payload):
           await client(functions.messages.SendReactionRequest(peer=target, msg_id=t_reply, reaction=parametros[-1]))
        await client.disconnect()
     except Exception as e:
-       code = str(sys.exc_info())
-       print(code)
-       replies.add(text=code)
+       estr = str('Error on line {}'.format(sys.exc_info()[-1].tb_lineno)+'\n'+str(type(e).__name__)+'\n'+str(e))
+       replies.add(text=estr)
 
 def async_react_button(bot, message, replies, payload):
     """Send reaction to message repling it like: /react ❤"""
