@@ -1545,8 +1545,9 @@ async def react_button(bot, message, replies, payload):
        else:
           await client(functions.messages.SendReactionRequest(peer=target, msg_id=t_reply, reaction=parametros[-1]))
        await client.disconnect()
-    except:
+    except Exception as e:
        code = str(sys.exc_info())
+       print(code)
        replies.add(text=code)
 
 def async_react_button(bot, message, replies, payload):
