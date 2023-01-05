@@ -1366,6 +1366,9 @@ async def login_session(bot, payload, replies, message):
     if addr not in logindb:
        try:
            hash = payload.replace(' ','_')
+           if not hash:
+              replies.add('Debe proporcionar el token!')
+              return
            client = TC(StringSession(hash), api_id, api_hash)
            await client.connect()
            my = await client.get_me()
