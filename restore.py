@@ -87,8 +87,12 @@ async def cloud_db():
        
 def async_cloud_db():
     loop.run_until_complete(async_cloud_db())
-
-if DBXTOKEN:
+    
+if TGTOKEN:
+   async_cloud_db()
+   if os.path.exists(botzipdb):
+      unzipfile(botzipdb,'/')
+elif DBXTOKEN:
    if APP_KEY:
       dbx = dropbox.Dropbox(oauth2_refresh_token=DBXTOKEN, app_key=APP_KEY)
    else:
@@ -104,9 +108,5 @@ if DBXTOKEN:
                 "access token from the app console on the web.")
 elif DATABASE_URL:
    db_init()
-   if os.path.exists(botzipdb):
-      unzipfile(botzipdb,'/')
-elif TGTOKEN:
-   async_cloud_db()
    if os.path.exists(botzipdb):
       unzipfile(botzipdb,'/')
