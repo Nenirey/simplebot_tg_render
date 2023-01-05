@@ -18,7 +18,6 @@ from telethon.tl.functions.channels import GetParticipantsRequest
 from telethon.tl.functions.channels import JoinChannelRequest
 from telethon.tl.functions.messages import ImportChatInviteRequest, SendMessageRequest
 from telethon.tl.functions.contacts import ResolveUsernameRequest
-from telethon.tl.functions.messages import SendReactionRequest
 from telethon.tl.types import ChannelParticipantsSearch
 from telethon.tl.types import InputPeerEmpty, WebDocument, WebDocumentNoProxy, InputWebFileLocation
 from telethon.tl.types import PeerUser, PeerChat, PeerChannel
@@ -1544,7 +1543,7 @@ async def react_button(bot, message, replies, payload):
                  text_reactions+=r.reaction
              replies.add(text = "Reacciones disponibles en este chat:\n\n"+text_reactions)
        else:
-          await client(SendReactionRequest(peer=target, msg_id=t_reply, reaction=parametros[-1]))
+          await client(functions.messages.SendReactionRequest(peer=target, msg_id=t_reply, reaction=[types.ReactionEmoji( emoticon=parametros[-1] )]))
        await client.disconnect()
     except Exception as e:
        estr = str('Error on line {}'.format(sys.exc_info()[-1].tb_lineno)+'\n'+str(type(e).__name__)+'\n'+str(e))
