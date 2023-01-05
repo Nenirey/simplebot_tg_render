@@ -2142,7 +2142,7 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
                         if hasattr(react,'chosen'):
                            reactions_text += "("+('•' if react.chosen else '')+react.reaction+str(react.count)+") "
                         elif hasattr(react, 'chosen_order'):
-                           reactions_text += "("+('•' if react.chosen_order>=0 else '')+react.reaction.emoticon+str(react.count)+") "
+                           reactions_text += "("+('•' if react.chosen_order is not None else '')+react.reaction.emoticon+str(react.count)+") "
                     reactions_text += "\n\n"
 
               #check if message have document
