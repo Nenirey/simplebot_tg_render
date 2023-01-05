@@ -198,12 +198,13 @@ if DBXTOKEN:
                 "access token from the app console on the web.")
 
 def save_bot_db():
-    if DBXTOKEN:
+    if TGTOKEN:
+       async_cloud_db()
+    elif DBXTOKEN:
        backup_db()
     elif DATABASE_URL:
        db_save()
-    elif TGTOKEN:
-       async_cloud_db()   
+       
 
 
 def backup(backup_path):
