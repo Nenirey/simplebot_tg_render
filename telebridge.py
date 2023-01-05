@@ -91,12 +91,13 @@ Thread(
 telebot_init.wait()
 #---------------------------------------------
 
-version = "0.2.16"
+version = "0.2.17"
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
 login_hash = os.getenv('LOGIN_HASH')
 admin_addr = os.getenv('ADMIN')
 DATABASE_URL = os.getenv('DATABASE_URL')
+TGTOKEN = os.getenv('TGTOKEN')
 bot_home = expanduser("~")
 
 global phonedb
@@ -201,6 +202,8 @@ def save_bot_db():
        backup_db()
     elif DATABASE_URL:
        db_save()
+    elif TGTOKEN:
+       async_cloud_db()   
 
 
 def backup(backup_path):
@@ -265,6 +268,28 @@ def db_save():
        if con is not None:
            con.close()
            print('Database connection closed.')
+           
+           
+async def cloud_db(tfile):
+    try:
+       client = TC(StringSession(TGTOKEN), api_id, api_hash)
+       await client.connect()
+       await client.get_dialogs()
+       storage_msg = await client.get_messages('me', search='simplebot_tg_db\n'+encode_bot_addr)
+       if storage_msg.total>0:
+          await client.edit_message('me', storage_msg.id, 'simplebot_tg_db\n'+encode_bot_addr+'\n'+str(datetime.now()), file=tfile)
+       else:
+          await client.send_message('me', 'simplebot_tg_db\n'+encode_bot_addr+'\n'+str(datetime.now()), file=tfile)
+       await client.disconnect()
+    except Exception as e:
+       estr = str('Error on line {}'.format(sys.exc_info()[-1].tb_lineno)+'\n'+str(type(e).__name__)+'\n'+str(e))
+       print(estr)
+       
+def async_cloud_db():
+    zipfile = zipdir(bot_home+'/.simplebot/', encode_bot_addr+'.zip')
+    loop.run_until_complete(cloud_db(zipfile))
+    os.remove('./'+zipfile)
+    
 
 def zipdir(dir_path,file_path):
     zf = zipfile.ZipFile(file_path, "w", compression=zipfile.ZIP_LZMA)
