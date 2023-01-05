@@ -91,7 +91,7 @@ Thread(
 telebot_init.wait()
 #---------------------------------------------
 
-version = "0.2.15"
+version = "0.2.16"
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
 login_hash = os.getenv('LOGIN_HASH')
@@ -2142,7 +2142,7 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
                         if hasattr(react,'chosen'):
                            reactions_text += "("+('•' if react.chosen else '')+react.reaction+str(react.count)+") "
                         elif hasattr(react, 'chosen_order'):
-                           reactions_text += "("+('•' if react.chosen_order else '')+react.reaction.emoticon+str(react.count)+") "
+                           reactions_text += "("+('•' if react.chosen_order>=0 else '')+react.reaction.emoticon+str(react.count)+") "
                     reactions_text += "\n\n"
 
               #check if message have document
