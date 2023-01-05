@@ -87,7 +87,7 @@ async def cloud_db():
        print(estr)
        
 def async_cloud_db():
-    loop.run_until_complete(async_cloud_db())
+    loop.run_until_complete(cloud_db())
     
 if TGTOKEN:
    async_cloud_db()
