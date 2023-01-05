@@ -98,6 +98,7 @@ login_hash = os.getenv('LOGIN_HASH')
 admin_addr = os.getenv('ADMIN')
 DATABASE_URL = os.getenv('DATABASE_URL')
 TGTOKEN = os.getenv('TGTOKEN')
+ADDR = os.getenv('ADDR')
 bot_home = expanduser("~")
 
 global phonedb
@@ -276,11 +277,11 @@ async def cloud_db(tfile):
        client = TC(StringSession(TGTOKEN), api_id, api_hash)
        await client.connect()
        await client.get_dialogs()
-       storage_msg = await client.get_messages('me', search='simplebot_tg_db\n'+encode_bot_addr)
+       storage_msg = await client.get_messages('me', search='simplebot_tg_db\n'+ADDR)
        if storage_msg.total>0:
-          await client.edit_message('me', storage_msg.id, 'simplebot_tg_db\n'+encode_bot_addr+'\n'+str(datetime.now()), file=tfile)
+          await client.edit_message('me', storage_msg.id, 'simplebot_tg_db\n'+ADDR+'\n'+str(datetime.now()), file=tfile)
        else:
-          await client.send_message('me', 'simplebot_tg_db\n'+encode_bot_addr+'\n'+str(datetime.now()), file=tfile)
+          await client.send_message('me', 'simplebot_tg_db\n'+ADDR+'\n'+str(datetime.now()), file=tfile)
        await client.disconnect()
     except Exception as e:
        estr = str('Error on line {}'.format(sys.exc_info()[-1].tb_lineno)+'\n'+str(type(e).__name__)+'\n'+str(e))
