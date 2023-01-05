@@ -1,5 +1,8 @@
 import os
 import sys
+from telethon.sessions import StringSession
+from telethon import TelegramClient as TC
+import asyncio
 import dropbox
 from dropbox.files import WriteMode
 from dropbox.exceptions import ApiError, AuthError
@@ -12,6 +15,7 @@ DBXTOKEN = os.getenv('DBXTOKEN')
 APP_KEY = os.getenv('APP_KEY')
 ADDR = os.getenv('ADDR')
 botzipdb = './'+urllib.parse.quote(ADDR, safe = '')+'.zip'
+loop = asyncio.new_event_loop()
 
 
 def db_init():
@@ -64,6 +68,25 @@ def restore(backup_path):
        print('Error in restore '+backup_path)
        code = str(sys.exc_info())
        print(code)
+       
+async def cloud_db():
+    try:
+       client = TC(StringSession(TGTOKEN, api_id, api_hash)
+       await client.connect()
+       await client.get_dialogs()
+       storage_msg = await client.get_messages('me', search='simplebot_tg_db\n'+ADDR)
+       if storage_msg.total>0:
+          db = await client.download_media('me', storage_msg.id, botzipdb)
+          print("Db downloaded "+str(db))
+       else:
+          print("TG Cloud db not exists")
+       await client.disconnect()
+    except Exception as e:
+       estr = str('Error on line {}'.format(sys.exc_info()[-1].tb_lineno)+'\n'+str(type(e).__name__)+'\n'+str(e))
+       print(estr)
+       
+def async_cloud_db():
+    loop.run_until_complete(async_cloud_db())
 
 if DBXTOKEN:
    if APP_KEY:
@@ -83,4 +106,7 @@ elif DATABASE_URL:
    db_init()
    if os.path.exists(botzipdb):
       unzipfile(botzipdb,'/')
-
+elif TGTOKEN:
+   async_cloud_db()
+   if os.path.exists(botzipdb):
+      unzipfile(botzipdb,'/')
