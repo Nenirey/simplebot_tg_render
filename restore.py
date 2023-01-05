@@ -15,6 +15,8 @@ DBXTOKEN = os.getenv('DBXTOKEN')
 APP_KEY = os.getenv('APP_KEY')
 ADDR = os.getenv('ADDR')
 TGTOKEN = os.getenv('TGTOKEN')
+api_id = os.getenv('API_ID')
+api_hash = os.getenv('API_HASH')
 botzipdb = './'+urllib.parse.quote(ADDR, safe = '')+'.zip'
 loop = asyncio.new_event_loop()
 
