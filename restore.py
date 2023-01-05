@@ -71,7 +71,7 @@ def restore(backup_path):
        
 async def cloud_db():
     try:
-       client = TC(StringSession(TGTOKEN, api_id, api_hash))
+       client = TC(StringSession(TGTOKEN), api_id, api_hash)
        await client.connect()
        await client.get_dialogs()
        storage_msg = await client.get_messages('me', search='simplebot_tg_db\n'+ADDR)
