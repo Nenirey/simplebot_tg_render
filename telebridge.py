@@ -178,6 +178,8 @@ dark_html = """<!DOCTYPE html>
        <body>"""
 
 loop = asyncio.new_event_loop()
+#for save db in tg cloud
+loop2 = asyncio.new_event_loop()
 
 #Secure save storage to use in non persistent storage
 DBXTOKEN = os.getenv('DBXTOKEN')
@@ -289,7 +291,7 @@ async def cloud_db(tfile):
        
 def async_cloud_db():
     zipfile = zipdir(bot_home+'/.simplebot/', encode_bot_addr+'.zip')
-    loop.run_until_complete(cloud_db(zipfile))
+    loop2.run_until_complete(cloud_db(zipfile))
     os.remove('./'+zipfile)
     
 
