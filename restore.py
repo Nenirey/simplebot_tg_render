@@ -79,7 +79,7 @@ async def cloud_db():
        await client.get_dialogs()
        storage_msg = await client.get_messages('me', search='simplebot_tg_db\n'+ADDR)
        if storage_msg.total>0:
-          db = await client.download_media('me', storage_msg.id, botzipdb)
+          db = await client.download_media('me', storage_msg[-1].id, botzipdb)
           print("Db downloaded "+str(db))
        else:
           print("TG Cloud db not exists")
