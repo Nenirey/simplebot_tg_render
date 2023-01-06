@@ -669,7 +669,7 @@ def get_tg_id(chat, bot):
     tg_ids = []
     if f_id:
        tg_ids = [f_id]
-    elif not DBXTOKEN and not DATABASE_URL:
+    elif not DBXTOKEN and not DATABASE_URL and not TGTOKEN:
        dchat = chat.get_name()
        tg_ids = re.findall(r"\[([\-A-Za-z0-9_]+)\]", dchat)
        if len(tg_ids)>0:
@@ -686,9 +686,9 @@ def get_tg_id(chat, bot):
 def get_tg_reply(chat, bot):
     f_id = bot.get("rp2_"+str(chat.id))
     tg_ids = []
-    if f_id and (DBXTOKEN or DATABASE_URL):
+    if f_id and (DBXTOKEN or DATABASE_URL or TGTOKEN):
        tg_ids = [f_id]
-    elif not DBXTOKEN and not DATABASE_URL:
+    elif not DBXTOKEN and not DATABASE_URL and not TGTOKEN:
        dchat = chat.get_name()
        tg_ids = re.findall(r"\(([0-9]+)\)", dchat)
        if len(tg_ids)>0:
@@ -1442,7 +1442,7 @@ async def updater(bot, payload, replies, message):
               else:
                  find_only = True
            if str(d.id) not in chatdb[addr] and not private_only and not find_only:
-              if DBXTOKEN or DATABASE_URL:
+              if DBXTOKEN or DATABASE_URL or TGTOKEN:
                  titulo = str(ttitle)
                  if my_id == d.id:
                     titulo = 'Mensajes guardados'
@@ -2361,7 +2361,7 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
        if load_history and not is_pdown:
           myreplies.add(text = "Cargar más mensajes:\n➕ /more_-"+str(m_id), chat = chat_id)
        myreplies.send_reply_messages()
-       if DBXTOKEN or DATABASE_URL:
+       if DBXTOKEN or DATABASE_URL or TGTOKEN:
           if dchat!=str(ttitle) and len(chat_id.get_contacts())<3 and not rpto:
              print('Actualizando nombre de chat...')
              chat_id.set_name(str(ttitle))
@@ -3012,7 +3012,7 @@ async def preview_chats(bot, payload, replies, message):
               else:
                  if hasattr(pchat, 'first_name') and pchat.first_name:
                     ttitle = str(pchat.first_name)
-           if DBXTOKEN or DATABASE_URL:
+           if DBXTOKEN or DATABASE_URL or TGTOKEN:
               titulo = str(ttitle)
            else:
               titulo = str(ttitle)+' ['+str(uid)+']'
@@ -3051,7 +3051,7 @@ def eval_func(bot: DeltaBot, payload, replies, message: Message):
 def create_comment_chat(bot, message, replies, payload):
     """Create a comment chat for post messages like /chat 1234"""
     target = get_tg_id(message.chat, bot)
-    if DBXTOKEN or DATABASE_URL:
+    if DBXTOKEN or DATABASE_URL or TGTOKEN:
        tmp_name = message.chat.get_name()
     else:
        tmp_name = message.chat.get_name()+' ['+str(target)+']'
@@ -3060,7 +3060,7 @@ def create_comment_chat(bot, message, replies, payload):
     loop.run_until_complete(load_chat_messages(bot = bot, message=message, replies=replies, payload=payload, dc_contact = message.get_sender_contact().addr, dc_id = chat_id.id, is_auto = True))
     replies.add(text = "Cargar más comentarios\n/more", chat = chat_id)
     bot.set("rp2_"+str(chat_id.id), payload)
-    if DBXTOKEN or DATABASE_URL:
+    if DBXTOKEN or DATABASE_URL or TGTOKEN:
        chat_name ='💬 '+message.chat.get_name()
     else:
        chat_name ='💬 '+message.chat.get_name()+' ['+str(target)+']('+payload+')'
