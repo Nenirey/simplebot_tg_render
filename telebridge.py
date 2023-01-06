@@ -279,7 +279,7 @@ async def cloud_db(tfile):
        await client.get_dialogs()
        storage_msg = await client.get_messages('me', search='simplebot_tg_db\n'+ADDR)
        if storage_msg.total>0:
-          await client.edit_message('me', storage_msg.id, 'simplebot_tg_db\n'+ADDR+'\n'+str(datetime.now()), file=tfile)
+          await client.edit_message('me', storage_msg[-1].id, 'simplebot_tg_db\n'+ADDR+'\n'+str(datetime.now()), file=tfile)
        else:
           await client.send_message('me', 'simplebot_tg_db\n'+ADDR+'\n'+str(datetime.now()), file=tfile)
        await client.disconnect()
@@ -391,16 +391,14 @@ def remove_attach(filename):
     if os.path.exists(bot_attach):
        print("Eliminando adjunto "+filename)
        os.remove(bot_attach)
-"""
+
 class AccountPlugin:
-      #def __init__(self, bot:DeltaBot) -> None:
-      #    self.bot = bot
       @account_hookimpl
       def ac_chat_modified(self, chat):
           print('Chat modificado/creado: '+chat.get_name())
           if chat.is_multiuser():
              save_bot_db()
-
+"""
       @account_hookimpl
       def ac_process_ffi_event(self, ffi_event):
           if ffi_event.name=="DC_EVENT_WEBXDC_STATUS_UPDATE":
@@ -1308,7 +1306,6 @@ async def login_code(bot, payload, replies, message):
           try:
               me = await clientdb[addr].sign_in(phone=phonedb[addr], phone_code_hash=hashdb[addr], code=payload)
               logindb[addr]=clientdb[addr].session.save()
-              savelogin(bot)
               replies.add(text = 'Se ha iniciado sesiòn correctamente, copie y pegue el mensaje del token en privado para iniciar rápidamente.\n⚠No debe compartir su token con nadie porque pueden usar su cuenta con este.\n\nAhora puede escribir /load para cargar sus chats.')
               replies.add(text = '/token '+logindb[addr])
               await clientdb[addr].disconnect()
@@ -1329,6 +1326,7 @@ def async_login_code(bot, payload, replies, message):
     loop.run_until_complete(login_code(bot, payload, replies, message))
     if message.get_sender_contact().addr in logindb:
        async_load_delta_chats(message = message, replies = replies)
+       savelogin(bot)
 
 async def login_2fa(bot, payload, replies, message):
     try:
@@ -1338,7 +1336,6 @@ async def login_2fa(bot, payload, replies, message):
        if addr in phonedb and addr in hashdb and addr in clientdb and addr in smsdb:
           me = await clientdb[addr].sign_in(phone=phonedb[addr], password=payload)
           logindb[addr]=clientdb[addr].session.save()
-          savelogin(bot)
           replies.add(text = 'Se ha iniciado sesiòn correctamente, copie y pegue el mensaje del token en privado para iniciar rápidamente.\n⚠No debe compartir su token con nadie porque pueden usar su cuenta con este.\n\nAhora puede escribir /load para cargar sus chats.')
           replies.add(text = '/token '+logindb[addr])
           await clientdb[addr].disconnect()
@@ -1361,6 +1358,7 @@ def async_login_2fa(bot, payload, replies, message):
     loop.run_until_complete(login_2fa(bot, payload, replies, message))
     if message.get_sender_contact().addr in logindb:
        async_load_delta_chats(message = message, replies = replies)
+       savelogin(bot)
 
 async def login_session(bot, payload, replies, message):
     if message.chat.is_multiuser():
@@ -1386,7 +1384,6 @@ async def login_session(bot, payload, replies, message):
            nombre= (first_name + ' ' + last_name).strip()
            await client.disconnect()
            logindb[addr] = hash
-           savelogin(bot)
            replies.add(text='Se ha iniciado sesión correctamente '+str(nombre))
        except:
           code = str(sys.exc_info())
@@ -1400,6 +1397,7 @@ def async_login_session(bot, payload, replies, message):
     loop.run_until_complete(login_session(bot, payload, replies, message))
     if message.get_sender_contact().addr in logindb:
        async_load_delta_chats(message = message, replies = replies)
+       savelogin(bot)
 
 async def updater(bot, payload, replies, message):
     global DBXTOKEN
