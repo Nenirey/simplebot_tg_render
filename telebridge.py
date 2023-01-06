@@ -290,10 +290,7 @@ async def cloud_db(tfile):
        
 def async_cloud_db():
     zipfile = zipdir(bot_home+'/.simplebot/', encode_bot_addr+'.zip')
-    if loop.is_running():
-       asyncio.run_coroutine_threadsafe(cloud_db(zipfile),loop)
-    else:
-       loop.run_until_complete(cloud_db(zipfile))
+    loop.run_until_complete(cloud_db(zipfile))
     
 
 def zipdir(dir_path,file_path):
