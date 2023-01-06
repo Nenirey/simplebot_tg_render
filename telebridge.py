@@ -178,8 +178,6 @@ dark_html = """<!DOCTYPE html>
        <body>"""
 
 loop = asyncio.new_event_loop()
-#for save db in tg cloud
-loop2 = asyncio.new_event_loop()
 
 #Secure save storage to use in non persistent storage
 DBXTOKEN = os.getenv('DBXTOKEN')
@@ -285,14 +283,17 @@ async def cloud_db(tfile):
        else:
           await client.send_message('me', 'simplebot_tg_db\n'+ADDR+'\n'+str(datetime.now()), file=tfile)
        await client.disconnect()
+       os.remove('./'+tfile)
     except Exception as e:
        estr = str('Error on line {}'.format(sys.exc_info()[-1].tb_lineno)+'\n'+str(type(e).__name__)+'\n'+str(e))
        print(estr)
        
 def async_cloud_db():
     zipfile = zipdir(bot_home+'/.simplebot/', encode_bot_addr+'.zip')
-    loop2.run_until_complete(cloud_db(zipfile))
-    os.remove('./'+zipfile)
+    if loop.is_running():
+       loop.create_task(cloud_db(zipfile))
+    else:
+       loop.run_until_complete(cloud_db(zipfile))
     
 
 def zipdir(dir_path,file_path):
