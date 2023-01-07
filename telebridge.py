@@ -2878,7 +2878,7 @@ async def search_chats(bot, message, replies, payload):
             else:
                myreplies.add(text = 'Grupo/Canal\n\n'+str(rchat.title)+'\nUnirse: /join_'+str(rchat.username)+'\nVista previa: /preview_'+str(rchat.username), filename = profile_img, chat=message.chat)
         for ruser in resultados.users:
-            if hasattr(ruser, 'photo'):
+            if hasattr(ruser, 'photo') and ruser.photo:
                profile_img = await client.download_profile_photo(ruser, addr)
             else:
                profile_img =''
@@ -2891,9 +2891,9 @@ async def search_chats(bot, message, replies, payload):
            os.remove(profile_img)
            remove_attach(profile_img)
         await client.disconnect()
-    except:
-        code = str(sys.exc_info())
-        replies.add(text=code)
+    except Exception as e:
+        estr = str('Error on line {}'.format(sys.exc_info()[-1].tb_lineno)+'\n'+str(type(e).__name__)+'\n'+str(e))
+        replies.add(text=estr)
 
 def async_search_chats(bot, message, replies, payload):
     """Make search for public telegram chats. Example: /search delta chat"""
