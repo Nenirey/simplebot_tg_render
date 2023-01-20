@@ -1640,6 +1640,7 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
        client = TC(StringSession(logindb[contacto]), api_id, api_hash, auto_reconnect=not is_auto, retry_delay = 16)
        await client.connect()
        all_chats = await client.get_dialogs()
+       tchat = None
        for chat in all_chats:
            if chat.entity.id == target:
               tchat = chat
