@@ -1645,9 +1645,9 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
               tchat = chat
            elif hasattr(chat.entity,'username') and chat.entity.username == target:
               tchat = chat
-           else:
-              rchat = await client(functions.messages.GetPeerDialogsRequest(peers=[target] ))
-              tchat = rchat.dialogs[0]
+           #else:
+              #rchat = await client(functions.messages.GetPeerDialogsRequest(peers=[target] ))
+              #tchat = rchat.dialogs[0]
        ttitle = 'Unknown'
        me = await client.get_me()
        my_id = me.id
@@ -2458,9 +2458,9 @@ async def echo_filter(bot, message, replies):
               tchat = chat
            elif hasattr(chat.entity,'username') and chat.entity.username == target:
               tchat = chat
-           else:
-             rchat = await client(functions.messages.GetPeerDialogsRequest(peers=[target] ))
-             tchat = rchat.dialogs[0]
+           #else:
+             #rchat = await client(functions.messages.GetPeerDialogsRequest(peers=[target] ))
+             #tchat = rchat.dialogs[0]
          sin_leer = tchat.unread_count
          await client.send_read_acknowledge(target)
        else:
