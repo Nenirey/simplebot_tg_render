@@ -2449,11 +2449,16 @@ async def echo_filter(bot, message, replies):
     try:
        client = TC(StringSession(logindb[addr]), api_id, api_hash)
        await client.connect()
-       await client.get_dialogs()
+       all_chats = await client.get_dialogs()
        #prevent ghost mode
        if not c_id:
-         tchat = await client(functions.messages.GetPeerDialogsRequest(peers=[target] ))
-         sin_leer = tchat.dialogs[0].unread_count
+         for chat in all_chats:
+           if chat.entity.id == target:
+              tchat = chat
+           elif hasattr(chat.entity,'username') and chat.entity.username == target:
+              tchat = chat
+         #tchat = await client(functions.messages.GetPeerDialogsRequest(peers=[target] ))
+         sin_leer = tchat.unread_count
          await client.send_read_acknowledge(target)
        else:
          sin_leer = 0
