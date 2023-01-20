@@ -1640,28 +1640,22 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
     try:
        client = TC(StringSession(logindb[contacto]), api_id, api_hash, auto_reconnect=not is_auto, retry_delay = 16)
        await client.connect()
-       await client.get_dialogs()
-       tchat = await client(functions.messages.GetPeerDialogsRequest(peers=[target] ))
+       all_chats = await client.get_dialogs()
+       for chat in all_chats:
+           if chat.entity.id == target:
+              tchat = chat
+           elif hasattr(chat.entity,'username') and chat.entity.username == target:
+              tchat = chat
+       #tchat = await client(functions.messages.GetPeerDialogsRequest(peers=[target] ))
        ttitle = 'Unknown'
        me = await client.get_me()
        my_id = me.id
        #extract chat title
-       if hasattr(tchat,'chats') and tchat.chats:
-          ttitle = tchat.chats[0].title
-       else:
-          if hasattr(tchat,'users') and tchat.users[0]:
-             if tchat.users[0].first_name:
-                first_name= tchat.users[0].first_name
-             else:
-                first_name= ""
-             if tchat.users[0].last_name:
-                last_name= tchat.users[0].last_name
-             else:
-                last_name= ""
-             ttitle = (first_name + ' ' + last_name).strip()
+       if hasattr(tchat,'title') and tchat.title:
+          ttitle = tchat.title
        if rpto:
           t = await client.get_messages(target, reply_to=rpto)
-       sin_leer = tchat.dialogs[0].unread_count
+       sin_leer = tchat.unread_count
        limite = 0
        load_history = False
        show_id = False
