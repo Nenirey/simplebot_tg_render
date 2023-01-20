@@ -91,7 +91,7 @@ Thread(
 telebot_init.wait()
 #---------------------------------------------
 
-version = "0.2.17"
+version = "0.2.18"
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
 login_hash = os.getenv('LOGIN_HASH')
@@ -206,7 +206,6 @@ def save_bot_db():
     elif DATABASE_URL:
        db_save()
        
-
 
 def backup(backup_path):
     with open(backup_path, 'rb') as f:
