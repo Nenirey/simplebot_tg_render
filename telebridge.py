@@ -1641,11 +1641,11 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
        await client.connect()
        all_chats = await client.get_dialogs()
        tchat = None
-       for chat in all_chats:
-           if chat.entity.id == target:
-              tchat = chat
-           elif hasattr(chat.entity,'username') and chat.entity.username == target:
-              tchat = chat
+       for ch in all_chats:
+           if ch.entity.id == target:
+              tchat = ch
+           elif hasattr(ch.entity,'username') and ch.entity.username == target:
+              tchat = ch
            #else:
               #rchat = await client(functions.messages.GetPeerDialogsRequest(peers=[target] ))
               #tchat = rchat.dialogs[0]
