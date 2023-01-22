@@ -1642,11 +1642,12 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
        all_chats = await client.get_dialogs()
        tchat = None
        for ch in all_chats:
-           print(str(ch.entity.id)+" "+str(target))
-           if str(ch.entity.id) == str(target):
+           if str(ch.entity.id) == str(target).lstrip('-100'):
               tchat = ch
            elif hasattr(ch.entity,'username') and str(ch.entity.username) == str(target):
               tchat = ch
+           if tchat is not None:
+              break
            #else:
               #rchat = await client(functions.messages.GetPeerDialogsRequest(peers=[target] ))
               #tchat = rchat.dialogs[0]
@@ -2455,10 +2456,12 @@ async def echo_filter(bot, message, replies):
        #prevent ghost mode
        if not c_id:
          for chat in all_chats:
-           if chat.entity.id == target:
+           if str(chat.entity.id) == str(target).lstrip('-100'):
               tchat = chat
            elif hasattr(chat.entity,'username') and chat.entity.username == target:
               tchat = chat
+           if tchat is not None:
+              break
            #else:
              #rchat = await client(functions.messages.GetPeerDialogsRequest(peers=[target] ))
              #tchat = rchat.dialogs[0]
