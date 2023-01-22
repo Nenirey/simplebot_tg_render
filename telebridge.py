@@ -1642,7 +1642,6 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
        all_chats = await client.get_dialogs()
        tchat = None
        for ch in all_chats:
-           print("-100"+str(ch.entity.id)+" "+str(target))
            if "-100"+str(ch.entity.id) == str(target) or ch.entity.id == target:
               tchat = ch
            elif hasattr(ch.entity,'username') and str(ch.entity.username) == str(target):
@@ -2457,7 +2456,7 @@ async def echo_filter(bot, message, replies):
        #prevent ghost mode
        if not c_id:
          for chat in all_chats:
-           if str(chat.entity.id) == str(target).lstrip('-100'):
+           if "-100"+str(chat.entity.id) == str(target) or chat.entity.id==target:
               tchat = chat
            elif hasattr(chat.entity,'username') and chat.entity.username == target:
               tchat = chat
