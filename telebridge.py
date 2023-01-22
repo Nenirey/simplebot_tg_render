@@ -1642,6 +1642,7 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
        all_chats = await client.get_dialogs()
        tchat = None
        for ch in all_chats:
+           print(str(ch.entity.id)+" "+str(target))
            if str(ch.entity.id) == str(target):
               tchat = ch
            elif hasattr(ch.entity,'username') and str(ch.entity.username) == str(target):
