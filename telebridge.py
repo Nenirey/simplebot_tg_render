@@ -2453,6 +2453,7 @@ async def echo_filter(bot, message, replies):
        client = TC(StringSession(logindb[addr]), api_id, api_hash)
        await client.connect()
        all_chats = await client.get_dialogs()
+       tchat = None
        #prevent ghost mode
        if not c_id:
          for chat in all_chats:
