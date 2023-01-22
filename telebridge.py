@@ -1642,16 +1642,16 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
        all_chats = await client.get_dialogs()
        tchat = None
        for ch in all_chats:
-           print(str(ch.entity.id)+" "+str(target).lstrip('-100'))
-           if str(ch.entity.id) == str(target).lstrip('-100') or ch.entity.id == target:
+           print("-100"+str(ch.entity.id)+" "+str(target))
+           if "-100"+str(ch.entity.id) == str(target) or ch.entity.id == target:
               tchat = ch
            elif hasattr(ch.entity,'username') and str(ch.entity.username) == str(target):
               tchat = ch
            if tchat is not None:
               break
-           #else:
-              #rchat = await client(functions.messages.GetPeerDialogsRequest(peers=[target] ))
-              #tchat = rchat.dialogs[0]
+       #if not tchat:
+          #rchat = await client(functions.messages.GetPeerDialogsRequest(peers=[target] ))
+          #tchat = rchat.dialogs[0]
        ttitle = 'Unknown'
        me = await client.get_me()
        my_id = me.id
