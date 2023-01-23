@@ -100,6 +100,8 @@ DATABASE_URL = os.getenv('DATABASE_URL')
 TGTOKEN = os.getenv('TGTOKEN')
 ADDR = os.getenv('ADDR')
 bot_home = expanduser("~")
+MAX_BUBBLE_SIZE = 1000
+MAX_BUBBLE_LINES = 38
 
 global phonedb
 phonedb = {}
@@ -2305,9 +2307,13 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
                        else:
                           full_text = fwd_text+mquote+send_by+str(wtitle)+"\n"+wmessage+str(wurl)
                           bubble_command = (down_button if f_size>0 else "")+reactions_text+comment_text+html_buttons+msg_id
-                          if len(full_text+bubble_command)>1000:
-                             bubble_text = full_text[0:1000-len(bubble_command)-6]+" [...]"
-                             html_spoiler = markdown.markdown(full_text)+(html_spoiler or "")
+                          if len(full_text+bubble_command)>MAX_BUBBLE_SIZE or str(full_text+bubble_command).count('\n')>MAX_BUBBLE_LINES:
+                             if len(bubble_command)>MAX_BUBBLE_SIZE or bubble_command.count('\n')>MAX_BUBBLE_LINES:
+                                bubble_text = full_text[0:MAX_BUBBLE_LINES-1]+" [...]"
+                                html_spoiler = markdown.markdown(full_text+bubble_command)+(html_spoiler or "")
+                             else:
+                                bubble_text = full_text[0:MAX_BUBBLE_SIZE-str(bubble_command).count('\n')-1]+" [...]"
+                                html_spoiler = markdown.markdown(full_text)+(html_spoiler or "")
                           else:
                              bubble_text = full_text
                           myreplies.add(text = bubble_text+bubble_command, chat = chat_id, quote = quote, html = html_spoiler, sender = sender_name)
@@ -2318,9 +2324,13 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
               if no_media:
                  full_text = fwd_text+mservice+mquote+send_by+str(text_message)+poll_message
                  bubble_command = reactions_text+comment_text+html_buttons+msg_id
-                 if len(full_text+bubble_command)>1000:
-                    bubble_text = full_text[0:1000-len(bubble_command)-6]+" [...]"
-                    html_spoiler = markdown.markdown(full_text)+(html_spoiler or "")
+                 if len(full_text+bubble_command)>MAX_BUBBLE_SIZE or str(full_text+bubble_command).count('\n')>MAX_BUBBLE_LINES:
+                    if len(bubble_command)>MAX_BUBBLE_SIZE or bubble_command.count('\n')>MAX_BUBBLE_LINES:
+                       bubble_text = full_text[0:MAX_BUBBLE_LINES-1]+" [...]"
+                       html_spoiler = markdown.markdown(full_text+bubble_command)+(html_spoiler or "")
+                    else:
+                       bubble_text = full_text[0:MAX_BUBBLE_LINES-str(bubble_command).count('\n')-1]+" [...]"
+                       html_spoiler = markdown.markdown(full_text)+(html_spoiler or "")
                  else:
                     bubble_text = full_text
                  myreplies.add(text = bubble_text+bubble_command, chat = chat_id, quote = quote, html = html_spoiler, sender = sender_name)
