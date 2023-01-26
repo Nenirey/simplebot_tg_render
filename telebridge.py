@@ -2316,7 +2316,7 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
                                    html_spoiler = markdown.markdown(full_text+bubble_command)+(html_spoiler or "")
                              else:
                                 bubble_text = full_text[0:MAX_BUBBLE_SIZE-str(bubble_command).count('\n')-1]+" [...]"
-                                if not html_spoiler
+                                if not html_spoiler:
                                    html_spoiler = markdown.markdown(full_text)+(html_spoiler or "")
                           else:
                              bubble_text = full_text
