@@ -1896,6 +1896,8 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
                                  html_spoiler += str(detail)
                         elif isinstance(block, types.PageBlockPreformatted):
                            html_spoiler += "<br><br>"+extract_text_block(block)
+                        elif isinstance(block, types.PageBlockKicker):
+                           html_spoiler += "<br><br><h3>"+extract_text_block(block)+"</h3>"
                         elif isinstance(block, types.PageBlockRelatedArticles):
                            for article in block.articles:
                                if hasattr(article,'title') and article.title:
@@ -2310,10 +2312,12 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
                           if len(full_text+bubble_command)>MAX_BUBBLE_SIZE or str(full_text+bubble_command).count('\n')>MAX_BUBBLE_LINES:
                              if len(bubble_command)>MAX_BUBBLE_SIZE or bubble_command.count('\n')>MAX_BUBBLE_LINES:
                                 bubble_text = full_text[0:MAX_BUBBLE_LINES-1]+" [...]"
-                                html_spoiler = markdown.markdown(full_text+bubble_command)+(html_spoiler or "")
+                                if not html_spoiler:
+                                   html_spoiler = markdown.markdown(full_text+bubble_command)+(html_spoiler or "")
                              else:
                                 bubble_text = full_text[0:MAX_BUBBLE_SIZE-str(bubble_command).count('\n')-1]+" [...]"
-                                html_spoiler = markdown.markdown(full_text)+(html_spoiler or "")
+                                if not html_spoiler
+                                   html_spoiler = markdown.markdown(full_text)+(html_spoiler or "")
                           else:
                              bubble_text = full_text
                           myreplies.add(text = bubble_text+bubble_command, chat = chat_id, quote = quote, html = html_spoiler, sender = sender_name)
@@ -2327,10 +2331,12 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
                  if len(full_text+bubble_command)>MAX_BUBBLE_SIZE or str(full_text+bubble_command).count('\n')>MAX_BUBBLE_LINES:
                     if len(bubble_command)>MAX_BUBBLE_SIZE or bubble_command.count('\n')>MAX_BUBBLE_LINES:
                        bubble_text = full_text[0:MAX_BUBBLE_LINES-1]+" [...]"
-                       html_spoiler = markdown.markdown(full_text+bubble_command)+(html_spoiler or "")
+                       if not html_spoiler:
+                          html_spoiler = markdown.markdown(full_text+bubble_command)+(html_spoiler or "")
                     else:
                        bubble_text = full_text[0:MAX_BUBBLE_LINES-str(bubble_command).count('\n')-1]+" [...]"
-                       html_spoiler = markdown.markdown(full_text)+(html_spoiler or "")
+                       if not html_spoiler:
+                          html_spoiler = markdown.markdown(full_text)+(html_spoiler or "")
                  else:
                     bubble_text = full_text
                  myreplies.add(text = bubble_text+bubble_command, chat = chat_id, quote = quote, html = html_spoiler, sender = sender_name)
