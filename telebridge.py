@@ -53,24 +53,8 @@ import string
 #This is only for keep healty the web service
 #--------------------------------------------
 from flask import Flask, request
-#import telebot
-#from telebot import types as teletypes
-#from telebot import util as teleutil
 
-#TOKEN = os.environ.get('TOKEN')
-#WEBHOOK = os.environ.get('RENDER_EXTERNAL_URL')+'/'
-
-#bot = telebot.TeleBot(token=TOKEN, skip_pending=False)
 server = Flask(__name__)
-
-#@bot.message_handler(commands=['help','Help','HELP','hELP'])
-#def send_welcome(message):
-#    bot.reply_to(message, 'This is a simplebot_tg helper')
-
-#@server.route('/' + TOKEN, methods=['POST'])
-#def getMessage():
-#    bot.process_new_updates([teletypes.Update.de_json(request.stream.read().decode("utf-8"))])
-#    return "!", 200
 
 @server.route("/")
 def webhook():
@@ -396,7 +380,7 @@ class AccountPlugin:
           print('Chat modificado/creado: '+chat.get_name())
           if chat.is_multiuser():
              save_bot_db()
-"""
+             
       @account_hookimpl
       def ac_process_ffi_event(self, ffi_event):
           if ffi_event.name=="DC_EVENT_WEBXDC_STATUS_UPDATE":
@@ -410,9 +394,8 @@ class AccountPlugin:
              msg = str(ffi_event.data1)+':'+str(ffi_event.data2)
              print(msg)
              if msg in unreaddb:
-                async_read_unread(unreaddb[msg][0], unreaddb[msg][1], unreaddb[msg][2])
+                #async_read_unread(unreaddb[msg][0], unreaddb[msg][1], unreaddb[msg][2])
                 del unreaddb[msg]
-"""
 
 @simplebot.hookimpl(tryfirst=True)
 def deltabot_incoming_message(message, replies) -> Optional[bool]:
@@ -3118,7 +3101,7 @@ async def auto_load(bot, message, replies):
                          for key, _ in unreaddb.items():
                              if key.startswith(str(inkey)+':'):
                                 print('Confirmando lectura de mensaje '+key)
-                                await read_unread(unreaddb[key][0],unreaddb[key][1],unreaddb[key][2])
+                                #await read_unread(unreaddb[key][0],unreaddb[key][1],unreaddb[key][2])
                                 del unreaddb[key]
                                 break
                       elif bot.get_chat(int(inkey)) and len(bot.get_chat(int(inkey)).get_contacts())<3 and bot.get_chat(int(inkey)).get_messages()[-1].get_message_info().find('rejected: Mailbox is full')>0:
