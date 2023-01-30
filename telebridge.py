@@ -53,31 +53,31 @@ import string
 #This is only for keep healty the web service
 #--------------------------------------------
 from flask import Flask, request
-import telebot
-from telebot import types as teletypes
-from telebot import util as teleutil
+#import telebot
+#from telebot import types as teletypes
+#from telebot import util as teleutil
 
-TOKEN = os.environ.get('TOKEN')
-WEBHOOK = os.environ.get('RENDER_EXTERNAL_URL')+'/'
+#TOKEN = os.environ.get('TOKEN')
+#WEBHOOK = os.environ.get('RENDER_EXTERNAL_URL')+'/'
 
-bot = telebot.TeleBot(token=TOKEN, skip_pending=False)
+#bot = telebot.TeleBot(token=TOKEN, skip_pending=False)
 server = Flask(__name__)
 
-@bot.message_handler(commands=['help','Help','HELP','hELP'])
-def send_welcome(message):
-    bot.reply_to(message, 'This is a simplebot_tg helper')
+#@bot.message_handler(commands=['help','Help','HELP','hELP'])
+#def send_welcome(message):
+#    bot.reply_to(message, 'This is a simplebot_tg helper')
 
-@server.route('/' + TOKEN, methods=['POST'])
-def getMessage():
-    bot.process_new_updates([teletypes.Update.de_json(request.stream.read().decode("utf-8"))])
-    return "!", 200
+#@server.route('/' + TOKEN, methods=['POST'])
+#def getMessage():
+#    bot.process_new_updates([teletypes.Update.de_json(request.stream.read().decode("utf-8"))])
+#    return "!", 200
 
 @server.route("/")
 def webhook():
-    bot.remove_webhook()
-    bot.set_webhook(url=WEBHOOK + TOKEN, allowed_updates=teleutil.update_types, drop_pending_updates = False)
+    #bot.remove_webhook()
+    #bot.set_webhook(url=WEBHOOK + TOKEN, allowed_updates=teleutil.update_types, drop_pending_updates = False)
     return "!", 200
-
+"""
 def start_background_loop(bridge_initialized: Event) -> None:
     bridge_initialized.set()
     server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 10000)))   
@@ -89,9 +89,10 @@ Thread(
         daemon=True,
 ).start()
 telebot_init.wait()
+"""
 #---------------------------------------------
 
-version = "0.2.18"
+version = "0.2.19"
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
 login_hash = os.getenv('LOGIN_HASH')
