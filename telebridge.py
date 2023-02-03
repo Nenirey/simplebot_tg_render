@@ -2003,7 +2003,7 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
                          else:
                             html_buttons += '['+str(b.text)+' /c_'+str(m.id)+'_'+str(nrow)+'_'+str(ncolumn)+'] '
                          ncolumn += 1
-                     html_buttons += '\n'
+                     #html_buttons += '\n'
                      nrow += 1
 
               #check if message is a poll
