@@ -1512,7 +1512,7 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
        all_chats = await client.get_dialogs()
        tchat = None
        for ch in all_chats:
-           if "-100"+str(ch.entity.id) == str(target) or "-"+str(ch.entity.id) == str(target) or ch.entity.id) == target:
+           if "-100"+str(ch.entity.id) == str(target) or "-"+str(ch.entity.id) == str(target) or ch.entity.id == target:
               tchat = ch
            elif hasattr(ch.entity,'username') and str(ch.entity.username) == str(target):
               tchat = ch
