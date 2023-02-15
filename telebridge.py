@@ -70,7 +70,7 @@ Thread(
 server_init.wait()
 #---------------------------------------------
 
-version = "0.2.21"
+version = "0.2.22"
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
 login_hash = os.getenv('LOGIN_HASH')
@@ -2495,10 +2495,10 @@ async def send_cmd(bot, message, replies, payload):
        if m:
           register_msg(addr, message.chat.id, message.id, m.id)
        await client.disconnect()
-    except:
-       await client(SendMessageRequest(target, payload))
-       code = str(sys.exc_info())
-       replies.add(text=code)
+    except Exception as e:
+        estr = str('Error on line {}'.format(sys.exc_info()[-1].tb_lineno)+'\n'+str(type(e).__name__)+'\n'+str(e))
+        replies.add(text=estr)
+        #await client(SendMessageRequest(target, payload))
 
 def async_send_cmd(bot, message, replies, payload):
     """Send command to telegram chats. Example /b /help"""
