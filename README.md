@@ -22,8 +22,8 @@ pip install -r requirements.txt
   - The email bot password 
 - ADMIN
   - Your own email as bot admin
-- DBXTOKEN
-  - Get from [Here](https://www.dropbox.com/developers/apps/create).
+- TGTOKEN
+  - After you login first use the token to save bot db in telegram cloud.
 
 ## Run local
 
@@ -33,3 +33,4 @@ pip install -r requirements.txt
 
 ## Deploy Now:
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Nenirey/simplebot_tg/tree/main)
+
