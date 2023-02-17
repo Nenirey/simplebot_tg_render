@@ -419,8 +419,6 @@ def deltabot_init(bot: DeltaBot) -> None:
 
 @simplebot.hookimpl
 def deltabot_start(bot: DeltaBot) -> None:
-    global auto_load_task
-    auto_load_task = asyncio.run_coroutine_threadsafe(auto_load(bot=bot, message = Message, replies = Replies),tloop)
     global bot_addr
     bot_addr = bot.account.get_config('addr')
     global encode_bot_addr
@@ -442,6 +440,8 @@ def deltabot_start(bot: DeltaBot) -> None:
         daemon=True,
     ).start()
     bridge_init.wait()
+    global auto_load_task
+    auto_load_task = asyncio.run_coroutine_threadsafe(auto_load(bot=bot, message = Message, replies = Replies),tloop)
     if admin_addr:
        bot.get_chat(admin_addr).send_text('El bot '+bot_addr+' se ha iniciado correctamente')
 
