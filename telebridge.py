@@ -23,6 +23,7 @@ from telethon.tl.types import InputPeerEmpty, WebDocument, WebDocumentNoProxy, I
 from telethon.tl.types import PeerUser, PeerChat, PeerChannel
 from telethon import utils, errors
 from telethon.errors import SessionPasswordNeededError
+from telethon.errors.rpcerrorlist import AuthKeyDuplicatedError
 from telethon import helpers
 import asyncio
 import re
@@ -70,7 +71,7 @@ Thread(
 server_init.wait()
 #---------------------------------------------
 
-version = "0.2.22"
+version = "0.2.23"
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
 login_hash = os.getenv('LOGIN_HASH')
@@ -2248,6 +2249,8 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
     except Exception as e:
        estr = str('Error on line {}'.format(sys.exc_info()[-1].tb_lineno)+'\n'+str(type(e).__name__)+'\n'+str(e))
        print(estr)
+       if isinstance(e, AuthKeyDuplicatedError):
+          del logindb[contacto]
        if not is_auto:
           myreplies.add(text=estr, chat = chat_id)
           myreplies.send_reply_messages()
