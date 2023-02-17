@@ -419,13 +419,6 @@ def deltabot_init(bot: DeltaBot) -> None:
 
 @simplebot.hookimpl
 def deltabot_start(bot: DeltaBot) -> None:
-    bridge_init = Event()
-    Thread(
-        target=start_background_loop,
-        args=(bridge_init,),
-        daemon=True,
-    ).start()
-    bridge_init.wait()
     global auto_load_task
     auto_load_task = asyncio.run_coroutine_threadsafe(auto_load(bot=bot, message = Message, replies = Replies),tloop)
     global bot_addr
@@ -442,6 +435,13 @@ def deltabot_start(bot: DeltaBot) -> None:
     for (key,_) in logindb.items():
         loop.run_until_complete(load_delta_chats(contacto=key))
         time.sleep(5)
+    bridge_init = Event()
+    Thread(
+        target=start_background_loop,
+        args=(bridge_init,),
+        daemon=True,
+    ).start()
+    bridge_init.wait()
     if admin_addr:
        bot.get_chat(admin_addr).send_text('El bot '+bot_addr+' se ha iniciado correctamente')
 
@@ -2250,6 +2250,9 @@ async def load_chat_messages(bot: DeltaBot, message = Message, replies = Replies
        estr = str('Error on line {}'.format(sys.exc_info()[-1].tb_lineno)+'\n'+str(type(e).__name__)+'\n'+str(e))
        print(estr)
        if isinstance(e, AuthKeyDuplicatedError):
+          print('Eliminando sesión inválida...')
+          myreplies.add(text='⚠️ Su token ha sido invalidado, debe iniciar sesión nuevamente.', chat = chat_id)
+          myreplies.send_reply_messages()
           del logindb[contacto]
        if not is_auto:
           myreplies.add(text=estr, chat = chat_id)
