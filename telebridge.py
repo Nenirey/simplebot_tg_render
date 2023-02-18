@@ -1418,7 +1418,7 @@ async def react_button(bot, message, replies, payload):
        client = TC(StringSession(logindb[addr]), api_id, api_hash)
        await client.connect()
        await client.get_dialogs()
-       if len(parametros)<1:
+       if len(parametros)<1 and not is_direct_react:
           pchat = await client.get_input_entity(target)
           av_reactions = None
           if isinstance(pchat, types.InputPeerChannel):
