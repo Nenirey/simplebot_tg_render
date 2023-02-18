@@ -71,7 +71,7 @@ Thread(
 server_init.wait()
 #---------------------------------------------
 
-version = "0.2.23"
+version = "0.2.24"
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
 login_hash = os.getenv('LOGIN_HASH')
@@ -413,6 +413,7 @@ def deltabot_init(bot: DeltaBot) -> None:
     bot.commands.register(name = "/info" ,func = async_chat_info)
     bot.commands.register(name = "/setting" ,func = bot_settings, admin = True)
     bot.commands.register(name = "/react" ,func = async_react_button)
+    bot.commands.register(name = "/👍" ,func = async_react_button)
     bot.commands.register(name = "/link2" ,func = link_to)
     bot.commands.register(name = "/chat" ,func = create_comment_chat)
     bot.commands.register(name = "/alias" ,func = create_alias)
@@ -526,6 +527,7 @@ def find_register_msg(contacto, dc_id, tg_msg):
          return
    else:
       return
+
 def last_register_msg(contacto, dc_id):
    if contacto in last_messagedb:
       if dc_id in last_messagedb[contacto]:
@@ -1411,6 +1413,7 @@ async def react_button(bot, message, replies, payload):
     if not target:
        replies.add(text = 'Este no es un chat de telegram!')
        return
+    is_direct_react = not message.text.lower().startswith('/react')
     try:
        client = TC(StringSession(logindb[addr]), api_id, api_hash)
        await client.connect()
@@ -1443,7 +1446,7 @@ async def react_button(bot, message, replies, payload):
                  text_reactions+=r.reaction
              replies.add(text = "Reacciones disponibles en este chat:\n\n"+text_reactions)
        else:
-          await client(functions.messages.SendReactionRequest(peer=target, msg_id=t_reply, reaction=[types.ReactionEmoji( emoticon=parametros[-1] )]))
+          await client(functions.messages.SendReactionRequest(peer=target, msg_id=t_reply, reaction=[types.ReactionEmoji( emoticon=(message.text.lstrip('/') if is_direct_react else parametros[-1]) )]))
        await client.disconnect()
     except Exception as e:
        estr = str('Error on line {}'.format(sys.exc_info()[-1].tb_lineno)+'\n'+str(type(e).__name__)+'\n'+str(e))
