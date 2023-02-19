@@ -413,7 +413,7 @@ def deltabot_init(bot: DeltaBot) -> None:
     bot.commands.register(name = "/info" ,func = async_chat_info)
     bot.commands.register(name = "/setting" ,func = bot_settings, admin = True)
     bot.commands.register(name = "/react" ,func = async_react_button)
-    bot.commands.register(name = "/👍" ,func = async_react_button)
+    #bot.commands.register(name = "/👍" ,func = async_react_button)
     bot.commands.register(name = "/link2" ,func = link_to)
     bot.commands.register(name = "/chat" ,func = create_comment_chat)
     bot.commands.register(name = "/alias" ,func = create_alias)
