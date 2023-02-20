@@ -416,7 +416,7 @@ def deltabot_init(bot: DeltaBot) -> None:
     bot.commands.register(name = "/chat" ,func = create_comment_chat)
     bot.commands.register(name = "/alias" ,func = create_alias)
     bot.commands.register(name = "/react" ,func = async_react_button)
-    emorea = '❤️‍🔥👍👎❤️🔥🥰👏😁🤔🤯😱🤬😢🎉🤩🤮💩🤡🌚⚡'
+    emorea = '👍👎❤️🔥🥰👏😁🤔🤯😱🤬😢🎉🤩🤮💩🤡🌚⚡😂😬'
     for e in emorea:
       bot.commands.register(name = "/"+e ,func = async_react_button)
       
