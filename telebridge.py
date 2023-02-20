@@ -305,12 +305,15 @@ class AccountPlugin:
                 del unreaddb[msg]
 
 @simplebot.hookimpl(tryfirst=True)
-def deltabot_incoming_message(message, replies) -> Optional[bool]:
+def deltabot_incoming_message(bot, message, replies, payload) -> Optional[bool]:
     """Check that the sender is not in the black or white list."""
     sender_addr = message.get_sender_contact().addr
     if white_list and sender_addr!=admin_addr and sender_addr not in white_list:
        if message.text.lower().startswith('/pdown') or message.text.lower().startswith('/alias'):
           return None
+       if message.text.startswith('/') and not message.text.lstrip('/').isalpha() and not message.text.lstrip('/').isnumeric():
+          async_react_button(bot, message, replies, payload)
+          return False
        print('Usuario '+str(sender_addr)+' no esta en la lista blanca')
        return True
     if black_list and sender_addr!=admin_addr and sender_addr in black_list:
@@ -416,9 +419,6 @@ def deltabot_init(bot: DeltaBot) -> None:
     bot.commands.register(name = "/chat" ,func = create_comment_chat)
     bot.commands.register(name = "/alias" ,func = create_alias)
     bot.commands.register(name = "/react" ,func = async_react_button)
-    emorea = '👍👎❤️🔥🥰👏😁🤔🤯😱🤬😢🎉🤩🤮💩🤡🌚⚡😂😬'
-    for e in emorea:
-      bot.commands.register(name = "/"+e ,func = async_react_button)
       
 
 @simplebot.hookimpl
