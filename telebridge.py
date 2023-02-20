@@ -305,14 +305,14 @@ class AccountPlugin:
                 del unreaddb[msg]
 
 @simplebot.hookimpl(tryfirst=True)
-def deltabot_incoming_message(bot, message, replies, payload) -> Optional[bool]:
+def deltabot_incoming_message(bot, message, replies) -> Optional[bool]:
     """Check that the sender is not in the black or white list."""
     sender_addr = message.get_sender_contact().addr
     if white_list and sender_addr!=admin_addr and sender_addr not in white_list:
        if message.text.lower().startswith('/pdown') or message.text.lower().startswith('/alias'):
           return None
-       if message.text.startswith('/') and not message.text.lstrip('/').isalpha() and not message.text.lstrip('/').isnumeric():
-          async_react_button(bot, message, replies, payload)
+       if message.text.startswith('/') and not message.text.lstrip('/').isalnum() and not message.text.lstrip('/').punctuation:
+          async_react_button(bot, message, replies, payload=None)
           return False
        print('Usuario '+str(sender_addr)+' no esta en la lista blanca')
        return True
