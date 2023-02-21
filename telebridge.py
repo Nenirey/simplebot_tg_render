@@ -313,7 +313,8 @@ def deltabot_incoming_message(bot, message, replies) -> Optional[bool]:
           return None
        if message.text.startswith('/') and not message.text.lstrip('/').isalnum() and not message.text.lstrip('/').punctuation:
           async_react_button(bot, message, replies, payload=None)
-          return False
+          async_load_chat_messages(bot, messages, replies, payload=None, dc_contact = message.get_sender_contact().addr, dc_id = message.chat.id, is_auto = False)
+          return None
        print('Usuario '+str(sender_addr)+' no esta en la lista blanca')
        return True
     if black_list and sender_addr!=admin_addr and sender_addr in black_list:
