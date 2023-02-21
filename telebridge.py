@@ -433,7 +433,7 @@ def deltabot_start(bot: DeltaBot) -> None:
     autochatsdb = json.loads(bot.get('AUTOCHATSDB') or '{}')
     global aliasdb
     aliasdb = json.loads(bot.get('ALIASDB') or '{}')
-    fixautochats(bot)
+    #fixautochats(bot)
     for (key,_) in logindb.items():
         loop.run_until_complete(load_delta_chats(contacto=key))
         time.sleep(5)
