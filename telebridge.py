@@ -312,8 +312,10 @@ def deltabot_incoming_message(bot, message, replies) -> Optional[bool]:
        if message.text.lower().startswith('/pdown') or message.text.lower().startswith('/alias'):
           return None
        if message.text.startswith('/') and not message.text.lstrip('/').isalnum() and not message.text.lstrip('/').punctuation:
-          async_react_button(bot, message, replies, payload=None)
-          async_load_chat_messages(bot, messages, replies, payload=None, dc_contact = message.get_sender_contact().addr, dc_id = message.chat.id, is_auto = False)
+          loop.run_until_complete(react_button(bot = bot, message = message, replies = replies, payload = None))
+          addr = message.get_sender_contact().addr
+          t_reply = is_register_msg(addr, message.chat.id, message.quote.id)
+          loop.run_until_complete(load_chat_messages(bot = bot, message=message, replies=replies, payload=str(t_reply), dc_contact = addr, dc_id = message.chat.id, is_auto = False))
           return True
        print('Usuario '+str(sender_addr)+' no esta en la lista blanca')
        return True
