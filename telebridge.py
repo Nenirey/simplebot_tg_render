@@ -322,7 +322,7 @@ def deltabot_incoming_message(bot, message, replies) -> Optional[bool]:
        addr = message.get_sender_contact().addr
        t_reply = is_register_msg(addr, message.chat.id, message.quote.id)
        loop.run_until_complete(load_chat_messages(bot = bot, message=message, replies=replies, payload=str(t_reply), dc_contact = addr, dc_id = message.chat.id, is_auto = False))
-       return None
+       return True
     #print(message)
     """
     if message.chat.is_multiuser():
