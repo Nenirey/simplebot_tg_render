@@ -316,8 +316,8 @@ def deltabot_incoming_message(bot, message, replies) -> Optional[bool]:
     if black_list and sender_addr!=admin_addr and sender_addr in black_list:
        print('Usuario '+str(sender_addr)+' esta en la lista negra')
        return True
+    #Alow ditect reaction with /👍 command
     if message.text.startswith('/') and (not message.text.lstrip('/').isalnum()):
-       print('Direct reaction...')
        loop.run_until_complete(react_button(bot = bot, message = message, replies = replies, payload = ''))
        addr = message.get_sender_contact().addr
        t_reply = is_register_msg(addr, message.chat.id, message.quote.id)
@@ -1460,7 +1460,7 @@ async def react_button(bot, message, replies, payload):
        replies.add(text=estr)
 
 def async_react_button(bot, message, replies, payload):
-    """Send reaction to message repling it like: /react ❤"""
+    """Send reaction to message repling it like: /react ❤ or /👍"""
     loop.run_until_complete(react_button(bot = bot, message = message, replies = replies, payload = payload))
     addr = message.get_sender_contact().addr
     t_reply = is_register_msg(addr, message.chat.id, message.quote.id)
