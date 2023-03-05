@@ -308,9 +308,9 @@ class AccountPlugin:
 def deltabot_incoming_message(bot, message, replies) -> Optional[bool]:
     """Check that the sender is not in the black or white list."""
     sender_addr = message.get_sender_contact().addr
+    if message.text.lower().startswith('/pdown') or message.text.lower().startswith('/alias'):
+       return None
     if white_list and sender_addr!=admin_addr and sender_addr not in white_list:
-       if message.text.lower().startswith('/pdown') or message.text.lower().startswith('/alias'):
-          return None
        print('Usuario '+str(sender_addr)+' no esta en la lista blanca')
        return True
     if black_list and sender_addr!=admin_addr and sender_addr in black_list:
@@ -318,6 +318,7 @@ def deltabot_incoming_message(bot, message, replies) -> Optional[bool]:
        return True
     #Alow ditect reaction with /👍 command
     if message.text.startswith('/') and (not message.text.lstrip('/').isalnum()):
+       print('Processing reaction...')
        loop.run_until_complete(react_button(bot = bot, message = message, replies = replies, payload = ''))
        addr = message.get_sender_contact().addr
        t_reply = is_register_msg(addr, message.chat.id, message.quote.id)
