@@ -74,7 +74,6 @@ server_init.wait()
 version = "0.2.24"
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
-login_hash = os.getenv('LOGIN_HASH')
 admin_addr = os.getenv('ADMIN')
 TGTOKEN = os.getenv('TGTOKEN')
 ADDR = os.getenv('ADDR')
