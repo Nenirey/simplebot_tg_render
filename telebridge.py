@@ -315,7 +315,8 @@ def deltabot_incoming_message(bot, message, replies) -> Optional[bool]:
     if black_list and sender_addr!=admin_addr and sender_addr in black_list:
        print('Usuario '+str(sender_addr)+' esta en la lista negra')
        return True
-    #Alow ditect reaction with /👍 command
+    #Alow ditect reaction with /👍 commands
+    """
     if message.text.startswith('/') and (not message.text.lstrip('/').isalnum()):
        print('Processing reaction...')
        loop.run_until_complete(react_button(bot = bot, message = message, replies = replies, payload = ''))
@@ -324,7 +325,7 @@ def deltabot_incoming_message(bot, message, replies) -> Optional[bool]:
        loop.run_until_complete(load_chat_messages(bot = bot, message=message, replies=replies, payload=str(t_reply), dc_contact = addr, dc_id = message.chat.id, is_auto = False))
        return True
     #print(message)
-    """
+    
     if message.chat.is_multiuser():
        if get_tg_id(message.chat, bot):
           contactos = message.chat.get_contacts()
